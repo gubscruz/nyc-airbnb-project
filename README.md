@@ -28,6 +28,7 @@ pip install -r requirements.txt
 python code/eda.py          # ~2 min, t-SNE and UMAP are the slow part
 python code/preprocess.py   # prints shapes, NaN check and feature names
 mkdocs serve                # local preview of the site
+mkdocs gh-deploy            # builds and pushes the site to the gh-pages branch
 ```
 
 Fixed seed everywhere (`random_state=42`).
