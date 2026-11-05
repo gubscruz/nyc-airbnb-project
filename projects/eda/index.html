@@ -1,0 +1,1524 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Machine learning project on the New York City Airbnb Open Data (2019)">
+      
+      
+      
+        <link rel="canonical" href="https://gubscruz.github.io/nyc-airbnb-project/projects/eda/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>1. EDA - NYC Airbnb - price prediction</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#eda-new-york-city-airbnb-open-data" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NYC Airbnb - price prediction" class="md-header__button md-logo" aria-label="NYC Airbnb - price prediction" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NYC Airbnb - price prediction
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1. EDA
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-label="dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-label="light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/gubscruz/nyc-airbnb-project" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gubscruz/nyc-airbnb-project
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NYC Airbnb - price prediction" class="md-nav__button md-logo" aria-label="NYC Airbnb - price prediction" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NYC Airbnb - price prediction
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/gubscruz/nyc-airbnb-project" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gubscruz/nyc-airbnb-project
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. EDA
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. EDA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-proposal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. Proposal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-initial-inspection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Initial inspection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Initial inspection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-data-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Data dictionary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Quality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Target
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-train-and-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Train and test
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-univariate-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Univariate analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Univariate analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-numerical-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Numerical features
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-categorical-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Categorical features
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bivariate-and-multivariate-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Bivariate and multivariate analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Bivariate and multivariate analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-numerical-numerical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Numerical × numerical
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-categorical-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Categorical × target
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-numerical-categorical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Numerical × categorical
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-preprocessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Preprocessing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Preprocessing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-dimensionality-reduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Dimensionality reduction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Synthesis
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="eda-new-york-city-airbnb-open-data">EDA - New York City Airbnb Open Data<a class="headerlink" href="#eda-new-york-city-airbnb-open-data" title="Permanent link">&para;</a></h1>
+<p><strong>Team:</strong> Gustavo Cruz, Henrique Mayor and Pedro Fardin.</p>
+<p><strong>Task:</strong> regression. <strong>Target:</strong> <code>price</code> (USD per night of an Airbnb listing in NYC, 2019 snapshot).</p>
+<p>The question we want a model to answer at the end of the semester is simple: <em>given what a listing is and where it is, how much does it charge per night?</em> This report is the first step. No model is trained here; the goal is to understand the data well enough to build the preprocessing pipeline that the neural network will consume.</p>
+<p>Everything below is reproducible with two commands from a clean clone (see the <a href="https://github.com/gubscruz/nyc-airbnb-project">README</a>):</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>code/eda.py<span class="w">          </span><span class="c1"># figures + docs/projects/eda/results.json</span>
+python<span class="w"> </span>code/preprocess.py<span class="w">   </span><span class="c1"># pipeline sanity report</span>
+</code></pre></div>
+<p>All numbers quoted in the text are read from <code>results.json</code>, which <code>code/eda.py</code> writes, so the text and the code cannot drift apart silently.</p>
+<hr />
+<h2 id="0-proposal">0. Proposal<a class="headerlink" href="#0-proposal" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dataset</strong></td>
+<td><a href="https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data">New York City Airbnb Open Data (Kaggle, dgomonov)</a></td>
+</tr>
+<tr>
+<td><strong>Size</strong></td>
+<td>48,895 rows × 16 columns</td>
+</tr>
+<tr>
+<td><strong>Target</strong></td>
+<td><code>price</code> (integer, USD / night)</td>
+</tr>
+<tr>
+<td><strong>Numerical features</strong></td>
+<td>7 after dropping identifiers (<code>latitude</code>, <code>longitude</code>, <code>minimum_nights</code>, <code>number_of_reviews</code>, <code>reviews_per_month</code>, <code>calculated_host_listings_count</code>, <code>availability_365</code>)</td>
+</tr>
+<tr>
+<td><strong>Categorical features</strong></td>
+<td>3 (<code>neighbourhood_group</code>, <code>neighbourhood</code>, <code>room_type</code>)</td>
+</tr>
+<tr>
+<td><strong>Motivation</strong></td>
+<td>Price is the one number every host has to pick and every guest reacts to. The dataset is small enough to iterate fast, has a clear geographic structure and mixes clean numeric features with a 221-level categorical, which is exactly the kind of thing we want to learn to feed a neural network.</td>
+</tr>
+<tr>
+<td><strong>First risk</strong></td>
+<td>The target is absurdly skewed (one listing at $10,000, median $106). Whatever we do, the loss will be dominated by a handful of rows unless we model log-price.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-initial-inspection">1. Initial inspection<a class="headerlink" href="#1-initial-inspection" title="Permanent link">&para;</a></h2>
+<h3 id="a-data-dictionary">A. Data dictionary<a class="headerlink" href="#a-data-dictionary" title="Permanent link">&para;</a></h3>
+<p>The file is the public Airbnb snapshot for New York City compiled by Inside Airbnb and re-published on Kaggle (<code>AB_NYC_2019.csv</code>). <strong>Each row is one listing</strong> (one ad on the platform) as it looked in mid-2019; the most recent <code>last_review</code> in the file is 2019-07-08. Listings belong to hosts, and a host can own many listings.</p>
+<table>
+<thead>
+<tr>
+<th>column</th>
+<th>meaning</th>
+<th>type</th>
+<th>unit / values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>listing identifier on Airbnb</td>
+<td>int</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>title of the ad, written by the host</td>
+<td>free text</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>host_id</code></td>
+<td>host identifier</td>
+<td>int</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>host_name</code></td>
+<td>first name of the host</td>
+<td>text</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>neighbourhood_group</code></td>
+<td>borough</td>
+<td>categorical</td>
+<td>Manhattan, Brooklyn, Queens, Bronx, Staten Island</td>
+</tr>
+<tr>
+<td><code>neighbourhood</code></td>
+<td>neighbourhood inside the borough</td>
+<td>categorical</td>
+<td>221 values</td>
+</tr>
+<tr>
+<td><code>latitude</code></td>
+<td>position</td>
+<td>float</td>
+<td>decimal degrees</td>
+</tr>
+<tr>
+<td><code>longitude</code></td>
+<td>position</td>
+<td>float</td>
+<td>decimal degrees</td>
+</tr>
+<tr>
+<td><code>room_type</code></td>
+<td>what is being rented</td>
+<td>categorical</td>
+<td>Entire home/apt, Private room, Shared room</td>
+</tr>
+<tr>
+<td><code>price</code></td>
+<td><strong>target</strong>, nightly price set by the host</td>
+<td>int</td>
+<td>USD</td>
+</tr>
+<tr>
+<td><code>minimum_nights</code></td>
+<td>minimum length of stay the host accepts</td>
+<td>int</td>
+<td>nights</td>
+</tr>
+<tr>
+<td><code>number_of_reviews</code></td>
+<td>total reviews received</td>
+<td>int</td>
+<td>count</td>
+</tr>
+<tr>
+<td><code>last_review</code></td>
+<td>date of the most recent review</td>
+<td>date</td>
+<td>YYYY-MM-DD</td>
+</tr>
+<tr>
+<td><code>reviews_per_month</code></td>
+<td>average reviews per month since the first review</td>
+<td>float</td>
+<td>reviews / month</td>
+</tr>
+<tr>
+<td><code>calculated_host_listings_count</code></td>
+<td>how many listings the same host has in the file</td>
+<td>int</td>
+<td>count</td>
+</tr>
+<tr>
+<td><code>availability_365</code></td>
+<td>days the calendar is open in the next 365</td>
+<td>int</td>
+<td>days (0-365)</td>
+</tr>
+</tbody>
+</table>
+<p>Two things that are not obvious from the names and that we checked: <code>calculated_host_listings_count</code> is exactly the number of times each <code>host_id</code> appears in this file (100.0% of rows match a <code>groupby('host_id').size()</code>), so it is derived from the file itself, not from Airbnb's full catalogue; and <code>reviews_per_month</code> is missing <strong>exactly</strong> on the listings with <code>number_of_reviews == 0</code> (the two sets coincide for all 48,895 rows), which settles how to impute it later.</p>
+<h3 id="b-quality">B. Quality<a class="headerlink" href="#b-quality" title="Permanent link">&para;</a></h3>
+<p><strong>Missing values.</strong> Only four columns have any, and two of them are the same 10,052 rows:</p>
+<table>
+<thead>
+<tr>
+<th>column</th>
+<th>missing</th>
+<th>%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>last_review</code></td>
+<td>10,052</td>
+<td>20.56%</td>
+</tr>
+<tr>
+<td><code>reviews_per_month</code></td>
+<td>10,052</td>
+<td>20.56%</td>
+</tr>
+<tr>
+<td><code>host_name</code></td>
+<td>21</td>
+<td>0.04%</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>16</td>
+<td>0.03%</td>
+</tr>
+</tbody>
+</table>
+<p>The 20.56% are listings that never got a review, so this is not "lost" information: it is a legitimate state ("no reviews yet"). Everything else is complete.</p>
+<p><strong>Duplicates.</strong> 0 fully duplicated rows and 0 duplicated <code>id</code>. We also looked at <code>name</code>: 47,905 distinct titles for 48,895 rows, and the repeated ones are things like "Cozy room in Brooklyn" from different hosts, not copies of the same listing.</p>
+<p><strong>Impossible or inconsistent values</strong>, quantified:</p>
+<ul>
+<li><code>price == 0</code>: <strong>11 listings</strong>. A nightly price of zero is not a price, it is a placeholder; these rows are removed from the dataset before anything else (48,895 → 48,884 rows).</li>
+<li><code>price &gt;= 1000</code>: 298 listings (0.61%), maximum <strong>$10,000</strong>. They are extreme but not impossible (penthouses exist, and so do hosts who set an absurd price to block the calendar). We keep them and deal with them through the log transform of the target (section 4A).</li>
+<li><code>minimum_nights &gt; 365</code>: <strong>14 listings</strong>, maximum 1,250 nights; 747 listings (1.5%) ask for more than 30 nights. Nobody books 3.4 years on Airbnb; these are hosts using the field to effectively hide the listing. They are capped by the outlier strategy, not deleted.</li>
+<li><code>availability_365 == 0</code>: <strong>17,533 listings (35.9%)</strong>. This is the most interesting "suspicious" value: a third of the listings have no open date in the next year. It is not an error (the calendar is simply closed, or fully booked), but it means that <code>availability_365</code> carries an "is this listing active?" signal as much as a supply signal. We keep it as is and flag it as a risk.</li>
+<li><code>reviews_per_month &gt; 20</code>: 3 listings (max 58.5). Possible for a very active shared room, so left alone; the 99th-percentile clipping takes care of them anyway.</li>
+<li>Coordinates: latitude in [40.4998, 40.9131], longitude in [-74.2444, -73.7130], which is inside the city. Nothing to fix.</li>
+</ul>
+<p><strong>Columns dropped and why:</strong></p>
+<table>
+<thead>
+<tr>
+<th>column</th>
+<th>reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code>, <code>host_id</code></td>
+<td>identifiers; a model that learns them is memorising rows</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>free text, 47,905 distinct values; could feed an NLP feature later, but not in this pipeline</td>
+</tr>
+<tr>
+<td><code>host_name</code></td>
+<td>first name of the host, a quasi-identifier with no legitimate predictive meaning</td>
+</tr>
+<tr>
+<td><code>last_review</code></td>
+<td>a date that is only informative relative to the snapshot date; its "has reviews" information already lives in <code>number_of_reviews</code> and <code>reviews_per_month</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Leakage.</strong> No column is computed from <code>price</code>. The strongest rank correlation of any numeric column with the target in the raw file is <code>longitude</code> (Spearman -0.438), then <code>latitude</code> (0.136) and <code>calculated_host_listings_count</code> (-0.106). Nothing is suspiciously high, and the categorical columns describe the listing, not its price. We do not consider <code>calculated_host_listings_count</code> a leak even though it is derived from the file, because it does not use the target.</p>
+<h3 id="c-target">C. Target<a class="headerlink" href="#c-target" title="Permanent link">&para;</a></h3>
+<p>After removing the 11 zero-price rows, <code>price</code> looks like this (n = 48,884):</p>
+<table>
+<thead>
+<tr>
+<th>mean</th>
+<th>median</th>
+<th>std</th>
+<th>min</th>
+<th>Q1</th>
+<th>Q3</th>
+<th>P90</th>
+<th>P95</th>
+<th>P99</th>
+<th>max</th>
+<th>skewness</th>
+<th>kurtosis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$152.76</td>
+<td>$106</td>
+<td>$240.17</td>
+<td>$10</td>
+<td>$69</td>
+<td>$175</td>
+<td>$269</td>
+<td>$355</td>
+<td>$799</td>
+<td>$10,000</td>
+<td><strong>19.12</strong></td>
+<td>585.6</td>
+</tr>
+</tbody>
+</table>
+<p>The mean is 44% above the median, the standard deviation is larger than the mean, and a skewness of 19 is far beyond anything a squared-error loss can handle. Figure 1(a) shows the histogram up to $1,000 (99.51% of the rows; the remaining 0.49% are a tail that stretches 10× further to the right). Figure 1(b) shows <code>log1p(price)</code>: skewness drops to <strong>0.63</strong>, the shape is close to a slightly right-skewed bell, and the small spikes are hosts rounding to $50, $100, $150, $200.</p>
+<p><img alt="Figure 1" src="figures/fig01_target_price.png" /></p>
+<p><strong>Conclusion:</strong> the model will be trained on <code>log1p(price)</code> and predictions exponentiated back. This single decision removes most of the "outlier" problem in the target.</p>
+<h3 id="d-train-and-test">D. Train and test<a class="headerlink" href="#d-train-and-test" title="Permanent link">&para;</a></h3>
+<p>Split <strong>80 / 20 with <code>random_state=42</code></strong>, done right after the zero-price filter and before any other decision: 39,107 training rows and 9,777 test rows (20.0%). Since the task is regression we cannot stratify on the class, so we stratified on <strong>deciles of <code>log1p(price)</code></strong>, which guarantees the test set sees the same price range as the training set. The check in Figure 2 and the table below confirm it also preserved the categorical mix without us asking for it:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>train</th>
+<th>test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>median price</td>
+<td>$106</td>
+<td>$106</td>
+</tr>
+<tr>
+<td>mean price</td>
+<td>$152.3</td>
+<td>$154.7</td>
+</tr>
+<tr>
+<td>Manhattan / Brooklyn / Queens / Bronx / Staten Island</td>
+<td>44.4 / 41.1 / 11.6 / 2.2 / 0.8 %</td>
+<td>44.0 / 41.3 / 11.7 / 2.2 / 0.8 %</td>
+</tr>
+<tr>
+<td>Entire / Private / Shared</td>
+<td>51.9 / 45.7 / 2.4 %</td>
+<td>52.5 / 45.3 / 2.3 %</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Figure 2" src="figures/fig02_split_check.png" /></p>
+<p>One detail worth recording now: the neighbourhood <strong>Fort Wadsworth</strong> has a single listing in the whole file, and it fell in the test set, so the test set contains a category the training set never saw. This is exactly the case the encoder in section 4A has to survive.</p>
+<p><strong>From here on every statistic, figure and fitted parameter uses the training set only.</strong></p>
+<hr />
+<h2 id="2-univariate-analysis">2. Univariate analysis<a class="headerlink" href="#2-univariate-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="a-numerical-features">A. Numerical features<a class="headerlink" href="#a-numerical-features" title="Permanent link">&para;</a></h3>
+<p>Descriptive statistics of the 7 numerical features on the training set (n = 39,107; <code>reviews_per_month</code> has 31,051 non-missing values):</p>
+<table>
+<thead>
+<tr>
+<th>feature</th>
+<th>mean</th>
+<th>median</th>
+<th>std</th>
+<th>Q1</th>
+<th>Q3</th>
+<th>min</th>
+<th>max</th>
+<th>skewness</th>
+<th>% zeros</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>latitude</code></td>
+<td>40.729</td>
+<td>40.723</td>
+<td>0.055</td>
+<td>40.690</td>
+<td>40.763</td>
+<td>40.500</td>
+<td>40.913</td>
+<td>0.24</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>longitude</code></td>
+<td>-73.952</td>
+<td>-73.956</td>
+<td>0.046</td>
+<td>-73.983</td>
+<td>-73.936</td>
+<td>-74.243</td>
+<td>-73.713</td>
+<td>1.29</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>availability_365</code></td>
+<td>112.7</td>
+<td>45</td>
+<td>131.8</td>
+<td>0</td>
+<td>227</td>
+<td>0</td>
+<td>365</td>
+<td>0.77</td>
+<td>36.0</td>
+</tr>
+<tr>
+<td><code>minimum_nights</code></td>
+<td>7.08</td>
+<td>2</td>
+<td>20.74</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>1,250</td>
+<td><strong>21.8</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>number_of_reviews</code></td>
+<td>23.3</td>
+<td>5</td>
+<td>44.5</td>
+<td>1</td>
+<td>24</td>
+<td>0</td>
+<td>629</td>
+<td>3.66</td>
+<td>20.6</td>
+</tr>
+<tr>
+<td><code>reviews_per_month</code></td>
+<td>1.37</td>
+<td>0.71</td>
+<td>1.69</td>
+<td>0.19</td>
+<td>2.00</td>
+<td>0.01</td>
+<td>58.5</td>
+<td>3.35</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>calculated_host_listings_count</code></td>
+<td>7.24</td>
+<td>1</td>
+<td>33.3</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>327</td>
+<td>7.85</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>The table already tells the story, so we spent the two figures of this item on the shapes that matter for preprocessing. Figure 3 shows all seven distributions, with the four heavy-tailed counts on a <code>log1p</code> axis (on a linear axis they are a single bar at zero):</p>
+<p><img alt="Figure 3" src="figures/fig03_numeric_histograms.png" /></p>
+<ul>
+<li><code>latitude</code> and <code>longitude</code> are roughly bell-shaped with a few bumps (the boroughs). They are the only two features that can be standardised as they are.</li>
+<li><code>minimum_nights</code>, <code>number_of_reviews</code>, <code>reviews_per_month</code> and <code>calculated_host_listings_count</code> are all extremely right-skewed (skewness 3.3 to 21.8) and, even on a log scale, still skewed. 20.6% of the listings have zero reviews; the median host has exactly 1 listing but the maximum has 327.</li>
+<li><code>availability_365</code> is not skewed in the usual sense but it is bimodal at the edges.</li>
+</ul>
+<p>Figure 4 zooms in on the two spikes we think a model needs to know about:</p>
+<p><img alt="Figure 4" src="figures/fig04_spikes.png" /></p>
+<ul>
+<li>(a) 66.4% of the listings ask for 1 to 3 nights (10,228 / 9,343 / 6,390 listings), but there is an isolated spike at <strong>30 nights with 2,993 listings (7.7%)</strong>, bigger than any value between 8 and 29. This is New York's rule that forbids short stays in many buildings: those are long-term rentals disguised as Airbnbs, and they will behave differently in price.</li>
+<li>(b) <strong>36.0% of the training listings have 0 available days</strong>, and another 2.7% have all 365. The spike at zero is 15,000 rows, the next bin is below 1,000.</li>
+</ul>
+<p><strong>Conclusion:</strong> two scales (coordinates vs counts), four features that need a log, and two features with spikes that a scaler will not remove but that a network can learn from if we do not destroy them.</p>
+<h3 id="b-categorical-features">B. Categorical features<a class="headerlink" href="#b-categorical-features" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>feature</th>
+<th>cardinality (train)</th>
+<th>most frequent</th>
+<th>%</th>
+<th>least frequent</th>
+<th>n</th>
+<th>categories below 1%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>neighbourhood_group</code></td>
+<td>5</td>
+<td>Manhattan</td>
+<td>44.4%</td>
+<td>Staten Island</td>
+<td>295</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>room_type</code></td>
+<td>3</td>
+<td>Entire home/apt</td>
+<td>51.9%</td>
+<td>Shared room</td>
+<td>938</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>neighbourhood</code></td>
+<td>220 (221 in the full file)</td>
+<td>Williamsburg</td>
+<td>8.0%</td>
+<td>Richmondtown and 8 others</td>
+<td>1</td>
+<td>195</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Figure 5" src="figures/fig05_borough_roomtype.png" /></p>
+<p>Figure 5 crosses the two small categoricals. Manhattan (17,359) and Brooklyn (16,060) hold 85.5% of the listings between them; Queens has 4,522, the Bronx 871 and Staten Island only 295. Entire homes dominate in Manhattan (10,570 vs 6,404 private rooms), private rooms dominate in Brooklyn (8,148 vs 7,582) and in every other borough. <strong>Shared rooms are rare everywhere: 938 listings in total (2.4%) and only 8 in Staten Island</strong>, so any per-cell statistic involving them has to be read with care.</p>
+<p><img alt="Figure 6" src="figures/fig06_top_neighbourhoods.png" /></p>
+<p><code>neighbourhood</code> is the high-cardinality problem of this dataset. Figure 6 shows the 25 largest of the 220 neighbourhoods; they already hold <strong>71.1%</strong> of the training listings, and the top 10 alone hold 47.9%. At the other end, <strong>112 neighbourhoods have fewer than 30 training listings</strong>, 9 have exactly one, and together the 112 rare ones account for only 1,089 rows (2.78%). One-hot encoding all 220 would create 112 columns that are almost always zero and that the test set may contradict (Fort Wadsworth). That is the finding behind the rare-category grouping in section 4A.</p>
+<p><strong>Conclusion:</strong> <code>room_type</code> and <code>neighbourhood_group</code> can be one-hot encoded as they are; <code>neighbourhood</code> needs a frequency threshold, and Shared room / Staten Island / Bronx are small enough that the model will have few examples to learn from.</p>
+<hr />
+<h2 id="3-bivariate-and-multivariate-analysis">3. Bivariate and multivariate analysis<a class="headerlink" href="#3-bivariate-and-multivariate-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="a-numerical-numerical">A. Numerical × numerical<a class="headerlink" href="#a-numerical-numerical" title="Permanent link">&para;</a></h3>
+<p>We used <strong>Spearman</strong> rather than Pearson. Section 2A showed that five of the eight numerical columns (including the target) have skewness above 3 and maxima hundreds of times the median; Pearson is a linear correlation and a single $10,000 listing or a 1,250-night minimum moves it arbitrarily. Spearman works on ranks, which is also the right notion of "related" for features that will be log-transformed anyway. The difference is not academic: for <code>longitude</code> × <code>price</code> Pearson gives -0.15 and Spearman gives <strong>-0.44</strong>.</p>
+<p><img alt="Figure 7" src="figures/fig07_spearman_heatmap.png" /></p>
+<p>Reading Figure 7, the pairs that stand out:</p>
+<table>
+<thead>
+<tr>
+<th>pair</th>
+<th>Spearman</th>
+<th>Pearson</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>number_of_reviews</code> × <code>reviews_per_month</code></td>
+<td><strong>0.71</strong></td>
+<td>0.55</td>
+</tr>
+<tr>
+<td><code>longitude</code> × <code>price</code></td>
+<td><strong>-0.44</strong></td>
+<td>-0.15</td>
+</tr>
+<tr>
+<td><code>availability_365</code> × <code>calculated_host_listings_count</code></td>
+<td>0.41</td>
+<td>0.23</td>
+</tr>
+<tr>
+<td><code>availability_365</code> × <code>reviews_per_month</code></td>
+<td>0.39</td>
+<td>0.18</td>
+</tr>
+<tr>
+<td><code>minimum_nights</code> × <code>reviews_per_month</code></td>
+<td>-0.29</td>
+<td>-0.13</td>
+</tr>
+</tbody>
+</table>
+<p>Everything else is below 0.25 in absolute value. With the target, the only feature with a correlation worth the name is <code>longitude</code> (-0.44, i.e. prices go up as you go <strong>west</strong>, towards Manhattan); <code>latitude</code> is 0.13, <code>calculated_host_listings_count</code> -0.11, <code>minimum_nights</code> 0.10 and the rest is below 0.1. No single numeric feature predicts price on its own; the signal is in the interaction between position and room type, which is what the next two sections show.</p>
+<p><img alt="Figure 8" src="figures/fig08_scatter_pairs.png" /></p>
+<p>Figure 8(a) is the one <strong>redundant pair</strong>: <code>reviews_per_month</code> is <code>number_of_reviews</code> divided by the months since the first review, so the two are the same information at two time scales. We keep both for now (the ratio adds "recency", a 2-review listing from 2012 and one from last month are different), but if the network overfits this is the first pair to prune. Figure 8(b) shows that the 0.41 between availability and host portfolio size is not noise: hosts with dozens of listings keep their calendars open all year (the horizontal bands at the top sit at 300+ days), while single-listing hosts spread across the whole range.</p>
+<p><img alt="Figure 9" src="figures/fig09_map_price.png" /></p>
+<p>Figure 9 explains the -0.44 with <code>longitude</code>: the price is a function of distance to Manhattan, not of longitude itself. The bright band is Manhattan below Central Park plus the waterfront of Brooklyn; everything east of -73.9 is cheap no matter the latitude. <strong>Conclusion:</strong> <code>latitude</code> and <code>longitude</code> have to enter the model together (a network can learn the 2-D shape, a linear model on each coordinate cannot), and neither should be dropped.</p>
+<h3 id="b-categorical-target">B. Categorical × target<a class="headerlink" href="#b-categorical-target" title="Permanent link">&para;</a></h3>
+<p><img alt="Figure 10" src="figures/fig10_price_by_borough_room.png" /></p>
+<p>Figure 10 shows the price distribution for each borough × room type cell, on a log scale. Medians:</p>
+<table>
+<thead>
+<tr>
+<th>borough</th>
+<th>Entire home/apt</th>
+<th>Private room</th>
+<th>Shared room</th>
+<th>all</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Manhattan</td>
+<td><strong>$190</strong></td>
+<td>$90</td>
+<td>$69</td>
+<td>$150</td>
+</tr>
+<tr>
+<td>Brooklyn</td>
+<td>$149</td>
+<td>$65</td>
+<td>$35</td>
+<td>$90</td>
+</tr>
+<tr>
+<td>Queens</td>
+<td>$120</td>
+<td>$59</td>
+<td>$37</td>
+<td>$75</td>
+</tr>
+<tr>
+<td>Bronx</td>
+<td>$100</td>
+<td>$55</td>
+<td>$38</td>
+<td>$65</td>
+</tr>
+<tr>
+<td>Staten Island</td>
+<td>$101.5</td>
+<td>$55</td>
+<td>$52.5</td>
+<td>$75</td>
+</tr>
+<tr>
+<td>all</td>
+<td><strong>$160</strong></td>
+<td><strong>$70</strong></td>
+<td><strong>$45</strong></td>
+<td>$106</td>
+</tr>
+</tbody>
+</table>
+<p>Two readings. First, <code>room_type</code> is the strongest single predictor in the dataset: entire homes cost 2.3× a private room and 3.6× a shared room at the median, and the boxes barely overlap inside each borough. Second, the borough effect is a roughly constant multiplier on top of room type (Manhattan ≈ 1.3-1.4× Brooklyn in every room type), which is good news for a log target because a multiplier becomes an additive offset. Just these two categoricals, used as group means, explain <strong>45.4%</strong> of the variance of <code>log1p(price)</code> on the training set.</p>
+<p><strong>Conclusion of Figure 10:</strong> room type first, borough second, and the two combine multiplicatively, so a log target plus one-hot encoding of both is the right representation.</p>
+<p><img alt="Figure 11" src="figures/fig11_hood_median_price.png" /></p>
+<p>Figure 11 goes one level down, to neighbourhoods with at least 30 training listings (108 of them). The spread is <strong>7.5×</strong> between the most expensive (Tribeca, median $299.5, then NoHo $249.5 and Flatiron $225) and the cheapest (Corona $40, Borough Park $51, Woodhaven $51.5). The top 12 are all Manhattan south of Central Park except DUMBO; the bottom 12 are Queens, the Bronx and outer Brooklyn. Replacing borough by neighbourhood in the group-mean experiment above raises the explained variance from 45.4% to <strong>53.7%</strong>.</p>
+<p><strong>Conclusion of Figure 11:</strong> <code>neighbourhood</code> adds about 8 points of explained variance on top of borough, which is enough to justify keeping it despite the cardinality, but the gain comes from the ~100 neighbourhoods with enough data, not from the 112 rare ones.</p>
+<h3 id="c-numerical-categorical">C. Numerical × categorical<a class="headerlink" href="#c-numerical-categorical" title="Permanent link">&para;</a></h3>
+<p><img alt="Figure 12" src="figures/fig12_box_room_type.png" /></p>
+<p>Figure 12(a), <code>availability_365</code> by room type: the medians are 42, 45 and <strong>90</strong> days for entire home, private and shared rooms, and the third quartile jumps from 229 and 215 to <strong>342</strong>. Shared rooms differ in both <strong>location and spread</strong>: they are open more of the year and much more variable. They are also the cell with the fewest closed calendars (25.9% at zero vs 35.2% and 37.5%). Figure 12(b), <code>minimum_nights</code>: medians 3 / 2 / 1 nights, Q3 at 5 / 4 / 3. The groups differ in location (entire homes ask for longer stays) but the spread on the log scale is similar, and the outliers above 30 nights exist in all three.</p>
+<p><img alt="Figure 13" src="figures/fig13_box_group.png" /></p>
+<p>Figure 13(a), <code>number_of_reviews</code> by borough: the median rises as we leave Manhattan (4 → 6 → 7 → 9 → 11 reviews from Manhattan to Staten Island) and so does Q3 (19 → 25 → 33 → 31.5 → 39.5). A difference in <strong>location and spread</strong> in the same direction: outer-borough listings are fewer but, relative to their number, more reviewed, which fits a "fewer, more committed hosts" story. Figure 13(b), <code>calculated_host_listings_count</code> by room type: the median is 1 for entire homes and private rooms and <strong>2 for shared rooms</strong>; 61.1% of shared rooms belong to a host with more than one listing against 25.1% of entire homes. Here the difference is mostly <strong>spread</strong>: shared rooms are the professional-host segment.</p>
+<p><strong>Conclusion:</strong> the numerical features do not just shift between categories, the shared-room segment has a different variance structure (open calendars, multi-listing hosts), which is one more argument for a model that can learn interactions rather than additive effects.</p>
+<hr />
+<h2 id="4-preprocessing">4. Preprocessing<a class="headerlink" href="#4-preprocessing" title="Permanent link">&para;</a></h2>
+<p>Every choice below points to the finding that motivates it. The destination is a neural network, which changes two things compared with a tree model: scale matters (inputs should be roughly centred and of unit variance for the optimiser), and heavy tails matter (a few inputs at 50 standard deviations saturate the first layer).</p>
+<h3 id="a-strategies">A. Strategies<a class="headerlink" href="#a-strategies" title="Permanent link">&para;</a></h3>
+<p><strong>Row filter (before the split).</strong> The 11 rows with <code>price == 0</code> were removed (section 1B). Nothing else is deleted: 48,884 rows go into the split.</p>
+<p><strong>Missing values.</strong> The only real missingness is <code>reviews_per_month</code> (20.6% of the training set), and section 1A showed it is missing exactly when <code>number_of_reviews == 0</code>. The honest value is therefore <strong>0 reviews per month</strong>, not the median; we impute with a constant 0. <code>last_review</code> is dropped, <code>name</code> and <code>host_name</code> are dropped, so no other column needs imputation. Still, every branch of the pipeline has a <code>SimpleImputer</code> in front (median for numeric, most-frequent for categorical) so that a future file with a hole in <code>latitude</code> does not crash a model in production.</p>
+<p><strong>Outliers.</strong> Motivated by Table 2A and Figure 3: <code>minimum_nights</code> (max 1,250, skew 21.8), <code>number_of_reviews</code> (max 629), <code>reviews_per_month</code> (max 58.5) and <code>calculated_host_listings_count</code> (max 327, skew 7.85). The strategy is <strong>clip to the 1st-99th percentile learned on the training set, then <code>log1p</code></strong>. The bounds the pipeline learned are:</p>
+<table>
+<thead>
+<tr>
+<th>feature</th>
+<th>lower</th>
+<th>upper</th>
+<th>training rows clipped</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>minimum_nights</code></td>
+<td>1</td>
+<td>46.9</td>
+<td>392</td>
+</tr>
+<tr>
+<td><code>number_of_reviews</code></td>
+<td>0</td>
+<td>213.9</td>
+<td>392</td>
+</tr>
+<tr>
+<td><code>reviews_per_month</code></td>
+<td>0</td>
+<td>6.86</td>
+<td>392</td>
+</tr>
+<tr>
+<td><code>calculated_host_listings_count</code></td>
+<td>1</td>
+<td>232</td>
+<td>267</td>
+</tr>
+</tbody>
+</table>
+<p>In total <strong>1,387 training rows (3.55%)</strong> had at least one value clipped (312 in the test set, using the training bounds). The 392 are not a coincidence: clipping at the 99th percentile touches about 1% of 39,107 rows per column by construction. <code>availability_365</code> is bounded in [0, 365] and <code>latitude</code>/<code>longitude</code> are inside the city, so they are not clipped. The target is not clipped either: the <code>log1p</code> transform (section 1C, skewness 19.1 → 0.63) is what handles the $10,000 listing, and we want the model to see that such listings exist.</p>
+<p>Figure 14 shows the four heavy-tailed features before and after the clip + log + standardise branch. Skewness goes from 21.8 → 1.3, 3.7 → 0.3, 3.5 → 0.9 and 7.8 → 3.2. <code>calculated_host_listings_count</code> stays skewed because 65% of the listings sit at exactly 1; no monotone transform can spread a point mass, and that is fine.</p>
+<p><img alt="Figure 14" src="figures/fig14_before_after.png" /></p>
+<p><strong>Categorical encoding.</strong> <code>neighbourhood_group</code> (5) and <code>room_type</code> (3) are one-hot encoded with <code>handle_unknown="ignore"</code>: an unseen borough would become an all-zero row instead of an error. <code>neighbourhood</code> (220 in train, Figure 6) is one-hot encoded with <strong><code>min_frequency=30</code></strong>: the 112 neighbourhoods with fewer than 30 training listings are merged into one <code>infrequent</code> column, and <code>handle_unknown="infrequent_if_exist"</code> sends any category never seen in training to that same column. That is how <strong>Fort Wadsworth</strong>, which only exists in the test set, is handled without special code: it lands in <code>infrequent</code> together with 305 other test rows. The result is 108 + 1 = 109 neighbourhood columns instead of 220. We chose one-hot over target encoding on purpose: target encoding would need to be fitted inside cross-validation to avoid leaking the target, and 109 sparse inputs are not a problem for a network.</p>
+<p><strong>Scaling.</strong> Coordinates range over 0.4 degrees, counts over hundreds, dummies over {0, 1}: every numeric branch ends with a <code>StandardScaler</code> fitted on train, so that the network sees inputs of comparable magnitude. The log comes before the scaler (standardising a skew-21 variable just rescales the outliers).</p>
+<p><strong>Target.</strong> <code>log1p(price)</code>, exposed as <code>transform_target()</code> in the module. The pipeline itself only touches <code>X</code>.</p>
+<h3 id="b-dimensionality-reduction">B. Dimensionality reduction<a class="headerlink" href="#b-dimensionality-reduction" title="Permanent link">&para;</a></h3>
+<p>All three projections use the <strong>same 15 features</strong>: the 7 standardised numerical features plus the 8 dummies of <code>neighbourhood_group</code> and <code>room_type</code>, taken from the output of the fitted pipeline on the training set. The 109 <code>neighbourhood</code> dummies were left out on purpose: they are 98% zeros and would add 109 near-zero-variance directions that tell PCA nothing. Points are coloured by <code>log1p(price)</code>.</p>
+<p><strong>PCA.</strong></p>
+<p><img alt="Figure 15" src="figures/fig15_pca.png" /></p>
+<p>PC1 explains 25.0% and PC2 19.9%, so <strong>PC1 + PC2 = 44.9%</strong> of the variance; it takes 5 components to reach 80% and 8 to reach 95% (Figure 15a). On the 7 numerical features alone PC1 + PC2 would be 51.7%, the dummies spread the variance a bit. The loadings in Figure 16 say what the axes are:</p>
+<p><img alt="Figure 16" src="figures/fig16_pca_loadings.png" /></p>
+<ul>
+<li><strong>PC1</strong> is a <em>review activity</em> axis: <code>reviews_per_month</code> (0.61) and <code>number_of_reviews</code> (0.59) pull one way, <code>minimum_nights</code> (-0.40) and <code>calculated_host_listings_count</code> (-0.20) the other. High PC1 = short-stay listing with lots of recent reviews; low PC1 = long-minimum, multi-listing host with few reviews.</li>
+<li><strong>PC2</strong> is a <em>professional host</em> axis: <code>availability_365</code> (0.62), <code>calculated_host_listings_count</code> (0.61) and <code>minimum_nights</code> (0.39), all positive. It is the 0.41 correlation of Figure 8(b) turned into a direction.</li>
+<li><strong>PC3</strong> is pure geography: <code>latitude</code> (0.87), with Manhattan (+0.28) against Brooklyn (-0.34).</li>
+</ul>
+<p>The room-type dummies have loadings below 0.05 on every one of the first three components, which is the honest reading of Figure 15(b): the best linear 2-D picture of the features is about <em>how the listing is operated</em>, not about <em>what it is</em>, and that is why price barely shows a gradient (Spearman of PC1 with log-price is -0.15, of PC2 it is 0.07). The yellow points (expensive) are smeared through the cloud.</p>
+<p><strong>t-SNE</strong> (5,000 training rows sampled with seed 42, <code>init="pca"</code>, perplexity 30 and 100):</p>
+<p><img alt="Figure 17" src="figures/fig17_tsne.png" /></p>
+<p><strong>UMAP</strong> (the same 5,000 rows, <code>n_neighbors</code> 15 and 100, <code>min_dist=0.1</code>):</p>
+<p><img alt="Figure 18" src="figures/fig18_umap.png" /></p>
+<p><strong>Comparison.</strong> The nonlinear projections show something PCA cannot: both of them split the data into a handful of islands, and the islands are <strong>the room type × borough cells</strong> (dummies are discrete, so the neighbourhood graph that t-SNE and UMAP build is almost disconnected between cells). Inside each island there is a visible price gradient, from a dark (cheap) end to a bright (expensive) end: the "entire home in Manhattan" island is mostly green/yellow, the private-room islands are mostly purple/blue. So the structure that a model has to learn is <em>categorical cell first, then a continuous gradient inside the cell</em>, which PCA flattens into one cloud because the dummies carry little variance.</p>
+<p>The parameter sweep behaves as expected. At perplexity 30 t-SNE breaks the cells into many small blobs; at 100 it merges them into 4-5 large regions with a cleaner colour gradient. UMAP with <code>n_neighbors=15</code> gives sharply separated islands, with 100 the islands get bridges and the global layout is more stable. We remind ourselves that in both methods <strong>the size of an island and the distance between islands have no meaning</strong>: the shared-room island is not "far" from the others in any measurable sense, and UMAP's tighter clusters do not mean better separation than t-SNE's. The useful reading is only <em>which points are neighbours</em>, and that reading is consistent across the four panels.</p>
+<h3 id="c-pipeline">C. Pipeline<a class="headerlink" href="#c-pipeline" title="Permanent link">&para;</a></h3>
+<p>The pipeline lives in <a href="https://github.com/gubscruz/nyc-airbnb-project/blob/main/code/preprocess.py"><code>code/preprocess.py</code></a> and is importable:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">code.preprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">split_data</span><span class="p">,</span> <span class="n">build_preprocessor</span><span class="p">,</span> <span class="n">transform_target</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">()</span>                                  <span class="c1"># csv + price &gt; 0 filter</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">split_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="c1"># 80/20, seed 42, stratified on log-price deciles</span>
+<span class="n">pre</span> <span class="o">=</span> <span class="n">build_preprocessor</span><span class="p">()</span>                        <span class="c1"># ColumnTransformer</span>
+<span class="n">X_train_t</span> <span class="o">=</span> <span class="n">pre</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>            <span class="c1"># fit on train only</span>
+<span class="n">X_test_t</span> <span class="o">=</span> <span class="n">pre</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>                  <span class="c1"># test is only transformed</span>
+</code></pre></div>
+<p>The <code>ColumnTransformer</code> has five branches, one per feature group, and <code>python code/preprocess.py</code> prints the sanity report:</p>
+<div class="highlight"><pre><span></span><code>rows after filters      : 48884
+train / test rows       : 39107 / 9777
+NaN in train after pipe : 0
+NaN in test after pipe  : 0
+X_train_t shape         : (39107, 124)
+X_test_t shape          : (9777, 124)
+n features out          : 124
+</code></pre></div>
+<p><strong>No <code>NaN</code> is left</strong> in either set. The <strong>124 output features</strong> are: 2 geo (<code>geo__latitude</code>, <code>geo__longitude</code>), 1 bounded (<code>bounded__availability_365</code>), 4 heavy-tailed (<code>heavy__minimum_nights</code>, <code>heavy__number_of_reviews</code>, <code>heavy__reviews_per_month</code>, <code>heavy__calculated_host_listings_count</code>), 5 borough dummies (<code>cat__neighbourhood_group_*</code>), 3 room-type dummies (<code>cat__room_type_*</code>), and 109 neighbourhood dummies (<code>hood__neighbourhood_*</code>, the last one being <code>hood__neighbourhood_infrequent_sklearn</code>). The full list is what <code>pre.get_feature_names_out()</code> returns and is printed by the script.</p>
+<hr />
+<h2 id="5-synthesis">5. Synthesis<a class="headerlink" href="#5-synthesis" title="Permanent link">&para;</a></h2>
+<p>Written for whoever builds the model next.</p>
+<p><strong>Main findings</strong></p>
+<ol>
+<li><strong>Model log-price, not price.</strong> Skewness 19.1 on the raw target vs 0.63 after <code>log1p</code> (Figure 1, Table 1C). A squared-error loss on raw price would be fitting the 298 listings above $1,000.</li>
+<li><strong>Room type and location explain half of the variance before any modelling.</strong> Group medians of borough × room type give an R² of 0.454 on log-price, neighbourhood × room type gives 0.537 (Figures 10 and 11). A model that does not beat ~0.54 R² on the training set has learned nothing from the numerical features.</li>
+<li><strong>Price is geographic in 2-D.</strong> <code>longitude</code> alone has Spearman -0.44 with price but the map (Figure 9) shows a "distance to lower Manhattan" shape that needs both coordinates together.</li>
+<li><strong>The numerical features describe how a listing is operated, not what it costs.</strong> PCA's first two axes (review activity, professional host; Figure 16) carry 44.9% of the feature variance and almost no price gradient. t-SNE and UMAP (Figures 17-18) show the price gradient <em>inside</em> each room type × borough island.</li>
+<li><strong>Two spikes worth a feature each:</strong> 7.7% of listings at exactly 30 minimum nights (Figure 4a) and 36.0% with zero availability (Figure 4b). The pipeline keeps the information (clipping does not touch 30, and 0 stays 0) but the modelling step could add explicit <code>is_30_nights</code> and <code>is_closed</code> flags.</li>
+<li><strong>One redundant pair:</strong> <code>number_of_reviews</code> × <code>reviews_per_month</code>, Spearman 0.71 (Figure 8a). Kept for now, first candidate to drop.</li>
+</ol>
+<p><strong>Risks and handling plan</strong></p>
+<table>
+<thead>
+<tr>
+<th>risk</th>
+<th>evidence</th>
+<th>plan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Extreme prices dominate the loss</td>
+<td>max $10,000, kurtosis 585.6 (1C)</td>
+<td>train on <code>log1p(price)</code>; report MAE in dollars on the test set too, so the metric is readable</td>
+</tr>
+<tr>
+<td>36% of listings with closed calendars may be inactive, with stale prices</td>
+<td>Figure 4b</td>
+<td>keep them (no ground truth to remove them) but evaluate the error separately on <code>availability_365 == 0</code> vs <code>&gt; 0</code></td>
+</tr>
+<tr>
+<td>Rare categories: Shared room (2.4%), Staten Island (0.8%), 112 neighbourhoods with &lt; 30 listings</td>
+<td>Tables 2B</td>
+<td>rare neighbourhoods grouped into <code>infrequent</code>; monitor per-borough and per-room-type error; consider embedding <code>neighbourhood</code> instead of one-hot if the 109 columns overfit</td>
+</tr>
+<tr>
+<td>Unseen category at test time (Fort Wadsworth)</td>
+<td>1D</td>
+<td><code>handle_unknown="infrequent_if_exist"</code> already routes it to <code>infrequent</code>; no code change needed</td>
+</tr>
+<tr>
+<td>Collinear review features</td>
+<td>Spearman 0.71 (3A)</td>
+<td>dropout / weight decay in the network; drop <code>reviews_per_month</code> if validation says so</td>
+</tr>
+<tr>
+<td>Hosts with many listings share the same price policy, so rows are not independent</td>
+<td>327 listings from one host (1B)</td>
+<td>a grouped split by <code>host_id</code> would be stricter; we kept the random split because the course asks for a plain stratified split, but this is the first thing to try if test error looks optimistic</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Results summary</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Results summary</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Dataset, task and target</td>
+<td>NYC Airbnb Open Data 2019 (Kaggle) · regression · <code>price</code> (USD / night)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Instances × features (numerical / categorical)</td>
+<td>48,895 × 16 in the file; 48,884 × 10 features used (7 numerical / 3 categorical) + target</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Column with the most missing values and its percentage</td>
+<td><code>last_review</code> and <code>reviews_per_month</code>, 10,052 rows each (20.56%)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Dropped columns and the reason</td>
+<td><code>id</code>, <code>host_id</code> (identifiers), <code>name</code>, <code>host_name</code> (free text / quasi-identifier), <code>last_review</code> (date, redundant with review counts); 11 rows with <code>price == 0</code> removed</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Mean and median of the target</td>
+<td>mean $152.76 · median $106 (skewness 19.12; 0.63 after <code>log1p</code>)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Size of the training and test sets</td>
+<td>39,107 train · 9,777 test (80/20, seed 42, stratified on log-price deciles)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Most correlated numerical pair and its value</td>
+<td><code>number_of_reviews</code> × <code>reviews_per_month</code>, Spearman 0.706</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Rows affected by the outlier strategy</td>
+<td>1,387 training rows (3.55%) clipped at the 1st/99th percentile in at least one of 4 features; 312 test rows</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Variance explained by PC1 + PC2</td>
+<td>44.9% (25.0% + 19.9%) on the 15 scaled pipeline features</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>shape</code> of train and test after the pipeline</td>
+<td>(39,107, 124) and (9,777, 124), 0 <code>NaN</code></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "toc.integrate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>
