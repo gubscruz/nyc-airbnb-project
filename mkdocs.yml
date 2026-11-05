@@ -1,0 +1,50 @@
+site_name: NYC Airbnb - price prediction
+site_description: Machine learning project on the New York City Airbnb Open Data (2019)
+site_url: https://gubscruz.github.io/nyc-airbnb-project/
+repo_url: https://github.com/gubscruz/nyc-airbnb-project
+repo_name: gubscruz/nyc-airbnb-project
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/weather-night
+        name: dark mode
+    - scheme: slate
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - toc.integrate
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+
+nav:
+  - Home: index.md
+  - Projects:
+      - 1. EDA: projects/eda/index.md
+
+markdown_extensions:
+  - tables
+  - attr_list
+  - md_in_html
+  - admonition
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_css:
+  - stylesheets/extra.css
