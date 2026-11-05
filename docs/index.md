@@ -1,6 +1,6 @@
 # NYC Airbnb - how much should a listing charge per night?
 
-Semester project for the Machine Learning course. We use the [New York City Airbnb Open Data](https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data) (48,895 listings, 2019 snapshot) and the task is **regression on `price`**.
+Semester project for the Machine Learning course, by **Gustavo Cruz, Henrique Mayor and Pedro Fardin**. We use the [New York City Airbnb Open Data](https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data) (48,895 listings, 2019 snapshot) and the task is **regression on `price`**.
 
 The project has a few deliverables and each one gets its own page:
 

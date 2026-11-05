@@ -3,11 +3,15 @@ project: eda
 task: regression
 dataset: https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data
 team:
+  - Gustavo Cruz
   - Henrique Mayor
+  - Pedro Fardin
 ai_use: "AI assistant used to draft code and revise text; every number and every decision in this report was checked and is explained by the team"
 ---
 
 # EDA - New York City Airbnb Open Data
+
+**Team:** Gustavo Cruz, Henrique Mayor and Pedro Fardin.
 
 **Task:** regression. **Target:** `price` (USD per night of an Airbnb listing in NYC, 2019 snapshot).
 

@@ -5,6 +5,8 @@ Machine Learning course project: predicting the nightly **price** of Airbnb list
 
 Report site: https://gubscruz.github.io/nyc-airbnb-project/
 
+**Authors:** Gustavo Cruz, Henrique Mayor and Pedro Fardin.
+
 ## Layout
 
 ```
